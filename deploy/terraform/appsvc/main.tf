@@ -52,7 +52,7 @@ resource "azurerm_app_service" "web" {
   name                = local.web_appsvc_name
   location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
-  app_service_plan_id = azurerm_app_service_plan.api.id
+  app_service_plan_id = azurerm_app_service_plan.web.id
 
   site_config {
     dotnet_framework_version = "v6.0"
@@ -60,7 +60,7 @@ resource "azurerm_app_service" "web" {
   }
 
   app_settings = {
-    "API__URL" = azurerm_app_service.api.default_site_hostname
+    "API__URL" = "https://${azurerm_app_service.api.default_site_hostname}"
     "IMAGES__URL" = var.url_images
   }
 
