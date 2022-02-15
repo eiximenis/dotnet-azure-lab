@@ -1,0 +1,47 @@
+﻿@page "/"
+@inject HttpClient Http
+@inject IConfiguration Config
+
+<PageTitle>Beers data</PageTitle>
+
+<h1>Beers Data</h1>
+
+@if (beers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var beer in beers)
+            {
+                <tr>
+                    <td>@beer.Name</td>
+                    <td>@beer.Style</td>
+                    <td>@beer.Price €</td>
+                    <td><img src="@Config["Images:Url"]/{@beer.Id}.jpg" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Beer[]? beers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        beers = await Http.GetFromJsonAsync<Beer[]>($"{Config["Api:Url"]}/beers");
+    }
+
+    public record Beer(int Id, string Name, string Style, double Abv, decimal Price);
+}

@@ -1,0 +1,46 @@
+﻿@page "/"
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using Blazor.Web.Data
+@inject BeerService BeersService
+
+<h1>Beers Data</h1>
+
+@if (beers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+   <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var beer in beers)
+            {
+                <tr>
+                    <td>@beer.Name</td>
+                    <td>@beer.Style</td>
+                    <td>@beer.Price €</td>
+                    <td><img src="@beer.ImageSrc" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Beer[]? beers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        beers = await BeersService.GetBeers();
+    }
+}
