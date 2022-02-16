@@ -1,4 +1,4 @@
-name: Build and deploy .NET Core app to Windows WebApp
+name: Build and deploy Blazor.Web
 on:
   push:
     branches:
