@@ -43,6 +43,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.MapGet("/health", async ctx => ctx.Response.StatusCode = 200);
+
 app.MapGet("/beers/{id}", async (BeersContext db, int id) => await db.Beers.FindAsync(id));
 app.MapGet("/beers", async (BeersContext db) => await db.Beers.ToListAsync());
 
