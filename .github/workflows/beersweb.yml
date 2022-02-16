@@ -4,7 +4,7 @@ on:
     branches:
     - main
     paths:
-    - "src/Blazor.Web"    
+    - "src/Blazor.Web/"    
   workflow_dispatch: {}
 env:
   AZURE_WEBAPP_NAME: ${{ secrets.beerswebname }}
