@@ -1,3 +1,3 @@
 output "constr" {
-  value = "Host=${azurerm_postgresql_server.pgsql.fqdn};Database=beers;Username=beers;Password=${var.pgsql_password};SSLMode=Prefer"
+  value = "Host=${azurerm_postgresql_server.pgsql.fqdn};Database=beers;Username=beers@${azurerm_postgresql_server.pgsql.fqdn};Password=${var.pgsql_password};SSLMode=Prefer"
 }

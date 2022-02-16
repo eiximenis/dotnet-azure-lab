@@ -29,7 +29,7 @@ resource "azurerm_app_service" "api" {
 
   connection_string {
     name  = "beers"
-    type  = "PostgreSQL"
+    type  = "Custom"
     value = var.db_constr
   }
 
