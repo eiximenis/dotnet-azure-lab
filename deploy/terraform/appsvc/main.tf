@@ -32,6 +32,18 @@ resource "azurerm_app_service" "api" {
     type  = "PostgreSQL"
     value = var.db_constr
   }
+
+  app_settings = {
+    "KV__URL" = var.key_vault_url != null ? var.key_vault_url : "" 
+  }
+  
+  dynamic "identity" {
+    for_each = local.use_managed_identity  ? [var.uai] : []
+    content {
+      type         = "UserAssigned"
+      identity_ids = [var.uai]
+    }
+  }
 }
 
 ###############################################
@@ -63,6 +75,5 @@ resource "azurerm_app_service" "web" {
     "API__URL" = "https://${azurerm_app_service.api.default_site_hostname}"
     "IMAGES__URL" = var.url_images
   }
-
-
 }
+

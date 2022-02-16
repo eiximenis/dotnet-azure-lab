@@ -2,8 +2,8 @@
 
 
 resource "azurerm_resource_group" "rg" {
-  name     = "beers"
-  location = "West Europe"
+  name     = var.resource_group
+  location = var.location
 }
 
 module "storage" {
@@ -22,6 +22,16 @@ module "pgsql" {
     azurerm_resource_group.rg
   ]
 }
+module "keyvault" {
+  count =  var.scenario > 1 ? 1 : 0
+  source         = "./keyvault"
+  resource_group = azurerm_resource_group.rg.name
+  db_constr      = module.pgsql.constr
+  create_uai = var.scenario > 2 ? true : false
+  depends_on = [
+    azurerm_resource_group.rg
+  ]
+}
 
 module "appsvc" {
   source         = "./appsvc"
@@ -31,7 +41,10 @@ module "appsvc" {
   depends_on = [
     azurerm_resource_group.rg
   ]
+  key_vault_url = var.scenario > 1 ?  module.keyvault[0].kv_url : null
+  uai = var.scenario > 2 ? module.keyvault[0].uai_principal_id : null
 }
+
 
 
 

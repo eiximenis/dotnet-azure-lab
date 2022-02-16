@@ -9,4 +9,5 @@ resource "random_id" "server" {
 locals {
     api_appsvc_name = "beersapi${random_id.server.hex}"
     web_appsvc_name = "beersweb${random_id.server.hex}"
+    use_managed_identity = var.uai != null ? true : false 
 }

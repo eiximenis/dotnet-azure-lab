@@ -1,3 +1,14 @@
+variable "uai" {
+    type = string
+    default = null
+}
+
+
+variable "key_vault_url" {
+    type = string
+    default = null
+}
+
 variable "resource_group" {
     type = string
 }
