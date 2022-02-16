@@ -13,9 +13,9 @@ if (args.Any() && args[0] == "/seed")
 }
 
 
-if (!string.IsNullOrEmpty(builder.Configuration["kv:uri"]))
+if (!string.IsNullOrEmpty(builder.Configuration["kv:url"]))
 {
-    builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["kv:uri"]), new DefaultAzureCredential());
+    builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["kv:url"]), new DefaultAzureCredential());
 }
 
 // Add services to the container.
