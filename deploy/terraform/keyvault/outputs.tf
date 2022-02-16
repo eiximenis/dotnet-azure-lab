@@ -7,6 +7,10 @@ output "kv_url" {
 }
 
 output "uai_principal_id" {
-    value = var.create_uai ? azurerm_user_assigned_identity.uai[0].id : null
+    value =  azurerm_user_assigned_identity.uai.principal_id 
+}
+
+output "uai_id" {
+    value =  azurerm_user_assigned_identity.uai.id 
 }
 

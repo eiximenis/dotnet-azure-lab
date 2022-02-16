@@ -22,10 +22,21 @@ resource "azurerm_key_vault" "kv" {
 
     key_permissions = [
       "Get",
+      "List",
+      "Update",
+      "Create",
+      "Delete",
+      "Recover"
+
     ]
 
     secret_permissions = [
       "Get",
+      "List",
+      "Set",
+      "Delete",
+      "Recover"
+
     ]
 
     storage_permissions = [
@@ -35,30 +46,27 @@ resource "azurerm_key_vault" "kv" {
 }
 
 resource "azurerm_key_vault_secret" "constr" {
-  name         = "db-constr"
+  name         = "ConnectionStrings--beers"
   value        = var.db_constr
   key_vault_id = azurerm_key_vault.kv.id
 }
 
 resource "azurerm_user_assigned_identity" "uai" {
-  count = var.create_uai ? 1 : 0
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
   name                = "beersuai"
 }
 
 resource "azurerm_role_assignment" "uaireader" {
-  count = var.create_uai ? 1 : 0
   scope                = azurerm_key_vault.kv.id
   role_definition_name = "Reader"
-  principal_id         = azurerm_user_assigned_identity.uai[0].id
+  principal_id         = azurerm_user_assigned_identity.uai.principal_id
 }
 
 resource "azurerm_key_vault_access_policy" "uaipolicy" {
-  count = var.create_uai ? 1 : 0
   key_vault_id = azurerm_key_vault.kv.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = azurerm_user_assigned_identity.uai[0].id
+  object_id    = azurerm_user_assigned_identity.uai.principal_id
 
   key_permissions = [
     "Get","List",

@@ -1,3 +1,4 @@
+using Azure.Identity;
 using Beers.Api;
 using Beers.Data;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,12 @@ if (args.Any() && args[0] == "/seed")
     Console.WriteLine("Seeding");
     await SeedDb(builder);
     return;
+}
+
+
+if (!string.IsNullOrEmpty(builder.Configuration["kv:uri"]))
+{
+    builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["kv:uri"]), new DefaultAzureCredential());
 }
 
 // Add services to the container.
