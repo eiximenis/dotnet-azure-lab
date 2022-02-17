@@ -22,6 +22,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapGet("/health", async ctx => ctx.Response.StatusCode = 200);
+
 app.UseStaticFiles();
 
 app.UseRouting();
